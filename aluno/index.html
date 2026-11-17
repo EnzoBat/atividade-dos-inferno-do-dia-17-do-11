@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sistema didático de pedidos do Café Central">
+  <title>Café Central | Pedidos</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="topo">
+    <div class="container topo-conteudo">
+      <div><p class="sobretitulo">SISTEMA DE ATENDIMENTO</p><h1>Café Central</h1><p class="subtitulo">Gestão simples de pedidos</p></div>
+      <span class="indicador">● Unidade em atendimento</span>
+    </div>
+  </header>
+  <main class="container">
+    <section class="resumo" aria-label="Resumo de pedidos">
+      <article class="indicador-card"><span>Total de pedidos</span><strong id="totalPedidos">0</strong></article>
+      <article class="indicador-card"><span>Pendentes</span><strong id="pedidosPendentes">0</strong></article>
+      <article class="indicador-card"><span>Valor registrado</span><strong id="valorTotal">R$ 0,00</strong></article>
+    </section>
+    <div class="colunas">
+      <section class="painel" aria-labelledby="tituloCadastro">
+        <div class="painel-cabecalho"><h2 id="tituloCadastro">Novo pedido</h2><p>Preencha os dados para registrar o atendimento.</p></div>
+        <form id="formPedido" novalidate>
+          <label for="cliente">Nome do cliente</label>
+          <input id="cliente" name="cliente" type="text" maxlength="60" placeholder="Ex.: Maria" required>
+          <label for="produto">Produto</label>
+          <select id="produto" name="produto" required>
+            <option value="">Selecione um produto</option>
+            <option value="cafe">Café expresso — R$ 6,00</option>
+            <option value="pao">Pão de queijo — R$ 8,00</option>
+            <option value="bolo">Fatia de bolo — R$ 12,00</option>
+            <option value="suco">Suco natural — R$ 10,00</option>
+          </select>
+          <label for="quantidade">Quantidade</label>
+          <input id="quantidade" name="quantidade" type="number" min="1" max="30" step="1" value="1" required>
+          
+          <div class="previsao">Valor estimado: <strong id="previsaoValor">R$ 0,00</strong></div>
+          <button id="adicionarPedido" class="botao botao-primario" type="submit">Adicionar pedido</button>
+          <p id="mensagemFormulario" class="mensagem" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+      <section class="painel painel-lista" aria-labelledby="tituloLista">
+        <div class="painel-cabecalho"><h2 id="tituloLista">Pedidos registrados</h2><p>Pesquise e acompanhe os pedidos do atendimento.</p></div>
+        <label for="pesquisa">Pesquisar por cliente ou produto</label>
+        <input id="pesquisa" type="search" placeholder="Digite para pesquisar...">
+        <p class="ajuda">Use o botão “Concluir” quando o pedido estiver pronto.</p>
+        <div id="listaPedidos" class="lista-pedidos" aria-live="polite"></div>
+      </section>
+    </div>
+  </main>
+  <footer class="rodape">Café Central · Projeto didático UC11 · Dados armazenados apenas neste navegador</footer>
+</body>
+</html>
