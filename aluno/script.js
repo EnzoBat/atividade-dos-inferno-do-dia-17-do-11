@@ -18,6 +18,15 @@ function salvarPedidos() {
   catch (erro) { console.warn("Não foi possível salvar os pedidos:", erro); }
 }
 
+function carregarPedidos() {
+  try {
+    const pedidosSalvos = JSON.parse(localStorage.getItem(CHAVE_ARMAZENAMENTO));
+    if (Array.isArray(pedidosSalvos)) pedidos = pedidosSalvos;
+  } catch (erro) {
+    console.warn("Não foi possível carregar os pedidos:", erro);
+  }
+}
+
 function mostrarMensagem(texto, erro = false) {
   const mensagem = $("mensagemFormulario");
   mensagem.textContent = texto;
@@ -36,6 +45,7 @@ function criarPedido(evento) {
   const cliente = $("cliente").value.trim();
   const produtoId = $("produto").value;
   const quantidade = Number($("quantidade").value);
+  const observacao = $("observacao").value.trim();
   if (!cliente || !CATALOGO[produtoId] || !Number.isInteger(quantidade) || quantidade < 1 || quantidade > 30) {
     mostrarMensagem("Preencha o cliente, o produto e uma quantidade entre 1 e 30.", true);
     return;
@@ -43,7 +53,7 @@ function criarPedido(evento) {
   const produto = CATALOGO[produtoId];
   const pedido = {
     id: Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 7),
-    cliente, produtoId, produtoNome: produto.nome, quantidade,
+    cliente, produtoId, produtoNome: produto.nome, quantidade, observacao,
     total: produto.preco * quantidade, status: "Pendente"
   };
   pedidos.push(pedido);
@@ -68,7 +78,8 @@ function renderizar() {
   const termo = $("pesquisa").value.trim().toLocaleLowerCase("pt-BR");
   const visiveis = pedidos.filter((p) =>
     p.cliente.toLocaleLowerCase("pt-BR").includes(termo) ||
-    p.produtoNome.toLocaleLowerCase("pt-BR").includes(termo)
+    p.produtoNome.toLocaleLowerCase("pt-BR").includes(termo) ||
+    (p.observacao || "").toLocaleLowerCase("pt-BR").includes(termo)
   );
   if (!visiveis.length) {
     const vazio = document.createElement("p");
@@ -84,13 +95,21 @@ function renderizar() {
     topo.append(titulo, etiqueta);
     const detalhe = document.createElement("p");
     detalhe.textContent = `${pedido.quantidade} × ${pedido.produtoNome} · ${formatarMoeda(pedido.total)}`;
+    const observacao = document.createElement("p");
+    observacao.className = "pedido-observacao";
+    observacao.textContent = `Observação: ${pedido.observacao || ""}`;
+
     const rodape = document.createElement("div"); rodape.className = "pedido-rodape";
     const codigo = document.createElement("small"); codigo.textContent = `Pedido ${pedido.id.slice(-5).toUpperCase()}`;
     const botao = document.createElement("button"); botao.type = "button"; botao.className = "botao botao-secundario";
     botao.textContent = pedido.status === "Concluído" ? "Concluído" : "Concluir";
     botao.disabled = pedido.status === "Concluído";
     botao.addEventListener("click", () => concluirPedido(pedido.id));
-    rodape.append(codigo, botao); artigo.append(topo, detalhe, rodape); lista.append(artigo);
+    rodape.append(codigo, botao);
+    artigo.append(topo, detalhe);
+    if (pedido.observacao) artigo.append(observacao);
+    artigo.append(rodape);
+    lista.append(artigo);
   }
   $("totalPedidos").textContent = pedidos.length;
   $("pedidosPendentes").textContent = pedidos.filter((p) => p.status === "Pendente").length;
@@ -98,10 +117,11 @@ function renderizar() {
 }
 
 // Configura o evento de envio do formulário.
-const formulario = $("formPedidos");
+const formulario = $("formPedido");
 if (formulario) formulario.addEventListener("submit", criarPedido);
 $("produto").addEventListener("change", valorEstimado);
 $("quantidade").addEventListener("input", valorEstimado);
 $("pesquisa").addEventListener("input", renderizar);
+carregarPedidos();
 valorEstimado();
 renderizar();

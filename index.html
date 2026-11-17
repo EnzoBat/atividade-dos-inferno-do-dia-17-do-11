@@ -1,18 +1,23 @@
 <!doctype html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Sistema didático de pedidos do Café Central">
-  <title>Café Central | Pedidos</title>
+  <title>Café Central Express | Pedidos</title>
   <link rel="stylesheet" href="aluno/style.css">
   <script src="aluno/script.js" defer></script>
 </head>
+
 <body>
   <header class="topo">
     <div class="container topo-conteudo">
-      <div><p class="sobretitulo">SISTEMA DE ATENDIMENTO</p><h1>Café Central</h1><p class="sub
-        titulo">Gestão simples de pedidos</p></div>
+      <div>
+        <p class="sobretitulo">SISTEMA DE ATENDIMENTO</p>
+        <h1>Café Central Express</h1>
+        <p class="subtitulo">Gestão simples de pedidos</p>
+      </div>
       <span class="indicador">● Unidade em atendimento</span>
     </div>
   </header>
@@ -24,7 +29,10 @@
     </section>
     <div class="colunas">
       <section class="painel" aria-labelledby="tituloCadastro">
-        <div class="painel-cabecalho"><h2 id="tituloCadastro">Novo pedido</h2><p>Preencha os dados para registrar o atendimento.</p></div>
+        <div class="painel-cabecalho">
+          <h2 id="tituloCadastro">Novo pedido</h2>
+          <p>Preencha os dados para registrar o atendimento.</p>
+        </div>
         <form id="formPedido" novalidate>
           <label for="cliente">Nome do cliente</label>
           <input id="cliente" name="cliente" type="text" maxlength="60" placeholder="Ex.: Maria" required>
@@ -38,14 +46,19 @@
           </select>
           <label for="quantidade">Quantidade</label>
           <input id="quantidade" name="quantidade" type="number" min="1" max="30" step="1" value="1" required>
-          
+          <label for="observacao">Observações <span class="ajuda">(opcional)</span></label>
+          <textarea id="observacao" name="observacao" maxlength="180" rows="3" placeholder="Ex.: sem açúcar, sem lactose"></textarea>
+
           <div class="previsao">Valor estimado: <strong id="previsaoValor">R$ 0,00</strong></div>
           <button id="adicionarPedido" class="botao botao-primario" type="submit">Adicionar pedido</button>
           <p id="mensagemFormulario" class="mensagem" role="status" aria-live="polite"></p>
         </form>
       </section>
       <section class="painel painel-lista" aria-labelledby="tituloLista">
-        <div class="painel-cabecalho"><h2 id="tituloLista">Pedidos registrados</h2><p>Pesquise e acompanhe os pedidos do atendimento.</p></div>
+        <div class="painel-cabecalho">
+          <h2 id="tituloLista">Pedidos registrados</h2>
+          <p>Pesquise e acompanhe os pedidos do atendimento.</p>
+        </div>
         <label for="pesquisa">Pesquisar por cliente ou produto</label>
         <input id="pesquisa" type="search" placeholder="Digite para pesquisar...">
         <p class="ajuda">Use o botão “Concluir” quando o pedido estiver pronto.</p>
@@ -55,4 +68,5 @@
   </main>
   <footer class="rodape">Café Central · Projeto didático UC11 · Dados armazenados apenas neste navegador</footer>
 </body>
+
 </html>
